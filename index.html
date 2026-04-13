@@ -1,0 +1,612 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Nalanil Labs</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=DM+Mono:wght@300;400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --ink: #1a1a18;
+    --ink-soft: #5a5a54;
+    --ink-muted: #9a9a94;
+    --paper: #f9f8f4;
+    --paper-warm: #f2f0e8;
+    --paper-card: #ffffff;
+    --accent: #2d4a3e;
+    --accent-light: #e8f0ec;
+    --border: rgba(26,26,24,0.1);
+    --border-med: rgba(26,26,24,0.18);
+    --serif: 'Cormorant Garamond', Georgia, serif;
+    --sans: 'DM Sans', sans-serif;
+    --mono: 'DM Mono', monospace;
+    --nav-h: 68px;
+    --max: 1100px;
+  }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: var(--sans);
+    background: var(--paper);
+    color: var(--ink);
+    font-size: 16px;
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  /* NAV */
+  nav {
+    position: fixed; top: 0; left: 0; right: 0;
+    height: var(--nav-h);
+    background: rgba(249,248,244,0.93);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--border);
+    z-index: 100;
+    display: flex; align-items: center;
+  }
+  .nav-inner {
+    max-width: var(--max); margin: 0 auto; padding: 0 2.5rem;
+    width: 100%; display: flex; align-items: center; justify-content: space-between;
+  }
+  .nav-logo {
+    font-family: var(--serif); font-size: 1.25rem; font-weight: 400;
+    letter-spacing: 0.02em; color: var(--ink); text-decoration: none; cursor: pointer;
+  }
+  .nav-logo span { font-style: italic; color: var(--accent); }
+  .nav-links { display: flex; gap: 2.5rem; list-style: none; align-items: center; }
+  .nav-links a {
+    font-size: 0.8rem; font-weight: 400; letter-spacing: 0.12em; text-transform: uppercase;
+    color: var(--ink-soft); text-decoration: none; cursor: pointer;
+    transition: color 0.2s; padding-bottom: 2px; border-bottom: 1px solid transparent;
+  }
+  .nav-links a:hover, .nav-links a.active { color: var(--ink); border-bottom-color: var(--ink); }
+
+  /* PAGES */
+  .page { display: none; min-height: 100vh; padding-top: var(--nav-h); animation: fadeUp 0.45s ease both; }
+  .page.visible { display: block; }
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(10px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  /* LAYOUT */
+  .container { max-width: var(--max); margin: 0 auto; padding: 0 2.5rem; }
+
+  /* SHARED */
+  .eyebrow {
+    font-family: var(--mono); font-size: 0.7rem; letter-spacing: 0.18em;
+    text-transform: uppercase; color: var(--ink-muted); margin-bottom: 1.25rem;
+  }
+  .page-header { padding: 6rem 0 4rem; border-bottom: 1px solid var(--border); }
+  .page-header h1 {
+    font-family: var(--serif); font-size: clamp(2.4rem, 5vw, 4rem);
+    font-weight: 300; line-height: 1.1; max-width: 640px;
+  }
+  .page-header p {
+    margin-top: 1.5rem; font-size: 1rem; color: var(--ink-soft);
+    max-width: 500px; font-weight: 300; line-height: 1.75;
+  }
+
+  /* BUTTONS */
+  .btn-primary {
+    display: inline-block; background: var(--ink); color: var(--paper);
+    font-family: var(--sans); font-size: 0.78rem; font-weight: 500;
+    letter-spacing: 0.1em; text-transform: uppercase; padding: 0.85rem 2rem;
+    cursor: pointer; border: none; transition: background 0.2s, transform 0.15s; text-decoration: none;
+  }
+  .btn-primary:hover { background: var(--accent); transform: translateY(-1px); }
+  .btn-ghost {
+    display: inline-block; background: transparent; color: var(--ink-soft);
+    font-family: var(--sans); font-size: 0.78rem; font-weight: 400;
+    letter-spacing: 0.08em; text-transform: uppercase; padding: 0.85rem 0;
+    cursor: pointer; border: none; text-decoration: none;
+    border-bottom: 1px solid var(--border-med); transition: color 0.2s, border-color 0.2s;
+  }
+  .btn-ghost:hover { color: var(--ink); border-color: var(--ink); }
+  .btn-group { display: flex; gap: 1rem; align-items: center; flex-wrap: wrap; }
+
+  /* HOME */
+  .home-hero { padding: 9rem 0 6rem; border-bottom: 1px solid var(--border); }
+  .hero-eyebrow {
+    font-family: var(--mono); font-size: 0.72rem; letter-spacing: 0.18em;
+    text-transform: uppercase; color: var(--ink-muted); margin-bottom: 1.75rem;
+  }
+  .hero-headline {
+    font-family: var(--serif); font-size: clamp(3.2rem, 7vw, 5.5rem);
+    font-weight: 300; line-height: 1.08; letter-spacing: -0.01em;
+    color: var(--ink); max-width: 760px; margin-bottom: 2.5rem;
+  }
+  .hero-headline em { font-style: italic; color: var(--accent); }
+  .hero-sub {
+    font-size: 1.05rem; font-weight: 300; color: var(--ink-soft);
+    max-width: 480px; line-height: 1.75; margin-bottom: 3rem;
+  }
+  .home-intro {
+    padding: 7rem 0; display: grid; grid-template-columns: 1fr 1fr;
+    gap: 6rem; align-items: start; border-bottom: 1px solid var(--border);
+  }
+  .intro-label {
+    font-family: var(--mono); font-size: 0.7rem; letter-spacing: 0.16em;
+    text-transform: uppercase; color: var(--ink-muted); margin-bottom: 1.5rem;
+  }
+  .intro-title { font-family: var(--serif); font-size: 2.4rem; font-weight: 300; line-height: 1.2; margin-bottom: 1.5rem; }
+  .intro-body { font-size: 0.95rem; color: var(--ink-soft); line-height: 1.8; font-weight: 300; }
+  .intro-features { display: flex; flex-direction: column; }
+  .feature-row {
+    display: flex; align-items: flex-start; gap: 1.5rem;
+    padding: 1.75rem 0; border-bottom: 1px solid var(--border);
+  }
+  .feature-row:first-child { border-top: 1px solid var(--border); }
+  .feature-num { font-family: var(--mono); font-size: 0.7rem; color: var(--ink-muted); padding-top: 3px; min-width: 24px; }
+  .feature-text strong { display: block; font-size: 0.9rem; font-weight: 500; margin-bottom: 0.25rem; color: var(--ink); }
+  .feature-text p { font-size: 0.85rem; color: var(--ink-soft); font-weight: 300; line-height: 1.6; }
+
+  /* SOLUTIONS */
+  .workflow-section { padding: 5rem 0; border-bottom: 1px solid var(--border); }
+  .workflow-intro {
+    display: grid; grid-template-columns: 1fr 1.4fr; gap: 5rem; align-items: start; margin-bottom: 4rem;
+  }
+  .workflow-intro h2 { font-family: var(--serif); font-size: 2.2rem; font-weight: 300; line-height: 1.2; }
+  .workflow-intro p { font-size: 0.92rem; color: var(--ink-soft); line-height: 1.85; font-weight: 300; }
+  .time-callout {
+    background: var(--accent); color: var(--paper); padding: 2.5rem 3rem;
+    margin-bottom: 4rem; display: flex; align-items: center; gap: 3rem;
+  }
+  .time-num {
+    font-family: var(--serif); font-size: 4.5rem; font-weight: 300;
+    line-height: 1; white-space: nowrap; opacity: 0.95;
+  }
+  .time-num span { font-size: 1.8rem; }
+  .time-text { font-size: 0.9rem; font-weight: 300; line-height: 1.7; opacity: 0.85; }
+  .time-text strong { font-weight: 500; opacity: 1; display: block; font-size: 1rem; margin-bottom: 0.4rem; }
+  .workflow-steps { display: flex; flex-direction: column; }
+  .step-row {
+    display: grid; grid-template-columns: 60px 1fr; gap: 2rem;
+    padding: 2.25rem 0; border-bottom: 1px solid var(--border); align-items: start;
+  }
+  .step-row:first-child { border-top: 1px solid var(--border); }
+  .step-num { font-family: var(--mono); font-size: 0.65rem; color: var(--ink-muted); letter-spacing: 0.08em; padding-top: 4px; }
+  .step-body h4 { font-family: var(--serif); font-size: 1.25rem; font-weight: 400; margin-bottom: 0.5rem; }
+  .step-body p { font-size: 0.85rem; color: var(--ink-soft); line-height: 1.75; font-weight: 300; }
+  .step-tag {
+    display: inline-block; margin-top: 0.75rem; font-family: var(--mono);
+    font-size: 0.62rem; letter-spacing: 0.1em; text-transform: uppercase;
+    color: var(--accent); padding: 0.25rem 0.65rem;
+    border: 1px solid rgba(45,74,62,0.3); background: var(--accent-light);
+  }
+  .solutions-cta {
+    padding: 5rem 0; display: flex; align-items: center;
+    justify-content: space-between; gap: 2rem;
+  }
+  .solutions-cta h2 { font-family: var(--serif); font-size: 2rem; font-weight: 300; max-width: 420px; line-height: 1.2; }
+
+  /* ABOUT */
+  .about-split {
+    padding: 6rem 0; display: grid; grid-template-columns: 1fr 1fr;
+    gap: 7rem; border-bottom: 1px solid var(--border); align-items: start;
+  }
+  .about-text h2 { font-family: var(--serif); font-size: 2.5rem; font-weight: 300; line-height: 1.15; margin-bottom: 2rem; }
+  .about-text p { font-size: 0.92rem; color: var(--ink-soft); line-height: 1.85; font-weight: 300; margin-bottom: 1.25rem; }
+  .origin-section { padding: 6rem 0; border-bottom: 1px solid var(--border); }
+  .origin-grid { display: grid; grid-template-columns: 1fr 2fr; gap: 6rem; align-items: start; margin-top: 3rem; }
+  .origin-sidebar h2 { font-family: var(--serif); font-size: 2.2rem; font-weight: 300; line-height: 1.15; }
+  .origin-sidebar h2 em { font-style: italic; color: var(--accent); }
+  .origin-note { margin-top: 2rem; padding-top: 2rem; border-top: 1px solid var(--border); }
+  .origin-note-label { font-family: var(--mono); font-size: 0.65rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--ink-muted); margin-bottom: 0.75rem; }
+  .origin-note p { font-size: 0.82rem; color: var(--ink-soft); line-height: 1.75; font-weight: 300; }
+  .origin-body { display: flex; flex-direction: column; gap: 1.75rem; }
+  .origin-body p { font-size: 0.95rem; color: var(--ink-soft); line-height: 1.85; font-weight: 300; }
+  .origin-body p.lead { font-size: 1.05rem; color: var(--ink); }
+  .origin-pullquote { background: var(--paper-warm); border-left: 2px solid var(--accent); padding: 1.75rem 2rem; }
+  .origin-pullquote p { font-family: var(--serif); font-size: 1.35rem; font-weight: 300; font-style: italic; line-height: 1.4; color: var(--ink); }
+  .values-section { padding: 5rem 0; border-bottom: 1px solid var(--border); }
+  .values-label { font-family: var(--mono); font-size: 0.7rem; letter-spacing: 0.16em; text-transform: uppercase; color: var(--ink-muted); margin-bottom: 3rem; }
+  .values-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 4rem; }
+  .value-item h4 { font-family: var(--serif); font-size: 1.3rem; font-weight: 400; margin-bottom: 0.75rem; }
+  .value-item p { font-size: 0.85rem; color: var(--ink-soft); line-height: 1.75; font-weight: 300; }
+
+  /* INQUIRY */
+  .inquiry-layout { padding: 6rem 0; display: grid; grid-template-columns: 1fr 1.6fr; gap: 8rem; align-items: start; }
+  .inquiry-info h2 { font-family: var(--serif); font-size: 2.4rem; font-weight: 300; line-height: 1.15; margin-bottom: 1.5rem; }
+  .inquiry-info p { font-size: 0.9rem; color: var(--ink-soft); line-height: 1.8; font-weight: 300; margin-bottom: 2.5rem; }
+  .contact-detail { padding: 1.25rem 0; border-top: 1px solid var(--border); display: flex; flex-direction: column; gap: 0.2rem; }
+  .contact-detail:last-child { border-bottom: 1px solid var(--border); }
+  .cd-label { font-family: var(--mono); font-size: 0.65rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--ink-muted); }
+  .cd-val { font-size: 0.9rem; color: var(--ink); font-weight: 300; }
+  .form-grid { display: flex; flex-direction: column; gap: 1.5rem; }
+  .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; }
+  .form-field { display: flex; flex-direction: column; gap: 0.5rem; }
+  .form-field label { font-size: 0.72rem; font-weight: 500; letter-spacing: 0.1em; text-transform: uppercase; color: var(--ink-soft); }
+  .form-field input,
+  .form-field select,
+  .form-field textarea {
+    background: var(--paper-card); border: 1px solid var(--border-med);
+    padding: 0.85rem 1rem; font-family: var(--sans); font-size: 0.9rem;
+    color: var(--ink); outline: none; transition: border-color 0.2s;
+    font-weight: 300; width: 100%; border-radius: 0; -webkit-appearance: none; appearance: none;
+  }
+  .form-field select {
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%239a9a94' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");
+    background-repeat: no-repeat; background-position: right 1rem center; padding-right: 2.5rem; cursor: pointer;
+  }
+  .form-field input:focus, .form-field select:focus, .form-field textarea:focus { border-color: var(--ink); }
+  .form-field textarea { resize: vertical; min-height: 140px; line-height: 1.6; }
+  .form-submit { display: flex; justify-content: flex-end; padding-top: 0.5rem; }
+  .btn-submit {
+    background: var(--ink); color: var(--paper); font-family: var(--sans);
+    font-size: 0.78rem; font-weight: 500; letter-spacing: 0.1em; text-transform: uppercase;
+    padding: 1rem 2.5rem; border: none; cursor: pointer; transition: background 0.2s, transform 0.15s;
+  }
+  .btn-submit:hover { background: var(--accent); transform: translateY(-1px); }
+  .form-note { font-size: 0.75rem; color: var(--ink-muted); font-weight: 300; }
+  .success-msg {
+    background: var(--accent-light); border: 1px solid rgba(45,74,62,0.2);
+    padding: 1.25rem 1.5rem; font-size: 0.88rem; color: var(--accent); display: none;
+  }
+
+  /* FOOTER */
+  footer { border-top: 1px solid var(--border); padding: 3rem 0; margin-top: 2rem; }
+  .footer-inner {
+    max-width: var(--max); margin: 0 auto; padding: 0 2.5rem;
+    display: flex; align-items: center; justify-content: space-between;
+  }
+  .footer-logo { font-family: var(--serif); font-size: 1rem; font-weight: 300; color: var(--ink-soft); }
+  .footer-copy { font-family: var(--mono); font-size: 0.65rem; color: var(--ink-muted); letter-spacing: 0.08em; }
+
+  /* MOBILE */
+  @media (max-width: 768px) {
+    .nav-links { display: none; }
+    .home-intro, .about-split, .workflow-intro, .origin-grid { grid-template-columns: 1fr; gap: 3rem; }
+    .values-grid { grid-template-columns: 1fr; gap: 2rem; }
+    .inquiry-layout { grid-template-columns: 1fr; gap: 4rem; }
+    .form-row { grid-template-columns: 1fr; }
+    .solutions-cta { flex-direction: column; align-items: flex-start; }
+    .time-callout { flex-direction: column; gap: 1rem; padding: 2rem; }
+    .time-num { font-size: 3rem; }
+  }
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="nav-inner">
+    <a class="nav-logo" href="#" onclick="showPage('home'); return false;">Nalanil <span>Labs</span></a>
+    <ul class="nav-links">
+      <li><a href="#" onclick="showPage('home'); return false;" data-page="home" class="active">Home</a></li>
+      <li><a href="#" onclick="showPage('solutions'); return false;" data-page="solutions">Solutions</a></li>
+      <li><a href="#" onclick="showPage('about'); return false;" data-page="about">About</a></li>
+      <li><a href="#" onclick="showPage('inquiry'); return false;" data-page="inquiry">Inquiry</a></li>
+    </ul>
+  </div>
+</nav>
+
+<!-- HOME -->
+<div class="page visible" id="page-home">
+  <div class="container">
+    <div class="home-hero">
+      <p class="hero-eyebrow">Nalanil Labs — Est. 2024</p>
+      <h1 class="hero-headline">Where careful <em>thinking</em> meets purposeful work.</h1>
+      <p class="hero-sub">We build things that matter — with clarity, craft, and a long view. Every project begins with a question worth asking.</p>
+      <div class="btn-group">
+        <a class="btn-primary" href="#" onclick="showPage('solutions'); return false;">Explore Solutions</a>
+        <a class="btn-ghost" href="#" onclick="showPage('inquiry'); return false;">Get in touch</a>
+      </div>
+    </div>
+  </div>
+
+  <div class="container">
+    <div class="home-intro">
+      <div>
+        <p class="intro-label">Our approach</p>
+        <h2 class="intro-title">Built on a foundation of rigorous curiosity</h2>
+        <p class="intro-body">Nalanil Labs is a focused practice — small enough to care, capable enough to deliver. We work at the intersection of clear thinking and practical execution, with partners who share our standards.</p>
+      </div>
+      <div class="intro-features">
+        <div class="feature-row">
+          <span class="feature-num">01</span>
+          <div class="feature-text">
+            <strong>Thoughtful by design</strong>
+            <p>Every engagement begins with listening. We ask until we understand, then we build.</p>
+          </div>
+        </div>
+        <div class="feature-row">
+          <span class="feature-num">02</span>
+          <div class="feature-text">
+            <strong>Craft over volume</strong>
+            <p>We don't scale through shortcuts. Quality is the only metric that compounds.</p>
+          </div>
+        </div>
+        <div class="feature-row">
+          <span class="feature-num">03</span>
+          <div class="feature-text">
+            <strong>Long-term thinking</strong>
+            <p>Solutions designed for the next decade, not just the next quarter.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <footer>
+    <div class="footer-inner">
+      <span class="footer-logo">Nalanil Labs</span>
+      <span class="footer-copy">© 2024 Nalanil Labs. nalanil.com</span>
+    </div>
+  </footer>
+</div>
+
+<!-- SOLUTIONS -->
+<div class="page" id="page-solutions">
+  <div class="container">
+    <div class="page-header">
+      <p class="eyebrow">What we do</p>
+      <h1>Technology that does the heavy lifting</h1>
+      <p>We build automated systems that give your team back the time they've been quietly losing — so they can focus on the work that actually moves things forward.</p>
+    </div>
+
+    <div class="workflow-section">
+      <div class="workflow-intro">
+        <h2>Automated Project Workflow</h2>
+        <p>Most businesses run on a quiet tax: hours spent chasing updates, formatting reports, routing approvals, and manually moving work from one stage to the next. It doesn't feel like much on any given Tuesday — but it adds up fast. Our automated project workflow is designed to eliminate that tax entirely, replacing manual coordination with systems that run themselves.</p>
+      </div>
+
+      <div class="time-callout">
+        <div class="time-num">10–15<br><span>weeks</span></div>
+        <div class="time-text">
+          <strong>Given back to your team, every year</strong>
+          That's not a projection — it's what happens when you stop doing manually what a well-built system can do automatically. Approvals, handoffs, status updates, reminders, reporting. All of it, handled.
+        </div>
+      </div>
+
+      <div class="workflow-steps">
+        <div class="step-row">
+          <div class="step-num">Step 01</div>
+          <div class="step-body">
+            <h4>Intake & Triage</h4>
+            <p>Every project, request, or task enters through a single structured intake point. No more chasing context across emails and chat threads. Information is captured once, cleanly, and routed automatically to the right people.</p>
+            <span class="step-tag">Automated routing</span>
+          </div>
+        </div>
+        <div class="step-row">
+          <div class="step-num">Step 02</div>
+          <div class="step-body">
+            <h4>Assignment & Kickoff</h4>
+            <p>Ownership is assigned based on workload, role, and availability — without a manager having to manually delegate. Kickoff briefs are generated and distributed automatically. Work starts without a meeting to start it.</p>
+            <span class="step-tag">AI-assisted delegation</span>
+          </div>
+        </div>
+        <div class="step-row">
+          <div class="step-num">Step 03</div>
+          <div class="step-body">
+            <h4>Progress & Handoffs</h4>
+            <p>As work moves through stages, the system handles the handoffs. Stakeholders are notified when they need to act — not drowned in updates when they don't. Bottlenecks surface before they become delays.</p>
+            <span class="step-tag">Smart notifications</span>
+          </div>
+        </div>
+        <div class="step-row">
+          <div class="step-num">Step 04</div>
+          <div class="step-body">
+            <h4>Approval & Sign-off</h4>
+            <p>Approvals that once sat in inboxes for days are now triggered, tracked, and followed up on automatically. Decision-makers get what they need to decide — nothing more, nothing less.</p>
+            <span class="step-tag">Automated follow-up</span>
+          </div>
+        </div>
+        <div class="step-row">
+          <div class="step-num">Step 05</div>
+          <div class="step-body">
+            <h4>Reporting & Close</h4>
+            <p>When a project closes, a summary is generated automatically — timeline, outcomes, decisions made. No retrospective meeting required. The institutional knowledge stays, without anyone having to write it up.</p>
+            <span class="step-tag">Auto-generated reports</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="solutions-cta">
+      <h2>Ready to see what this could look like for your business?</h2>
+      <a class="btn-primary" href="#" onclick="showPage('inquiry'); return false;">Start a conversation</a>
+    </div>
+  </div>
+
+  <footer>
+    <div class="footer-inner">
+      <span class="footer-logo">Nalanil Labs</span>
+      <span class="footer-copy">© 2024 Nalanil Labs. nalanil.com</span>
+    </div>
+  </footer>
+</div>
+
+<!-- ABOUT -->
+<div class="page" id="page-about">
+  <div class="container">
+    <div class="page-header">
+      <p class="eyebrow">Who we are</p>
+      <h1>A small lab with a long view</h1>
+    </div>
+
+    <div class="about-split">
+      <div class="about-text">
+        <h2>A name born from an ancient story. A mission shaped by a modern one.</h2>
+        <p>Nalanil Labs was founded as a quiet counterpoint to the culture of fast, cheap, and disposable. We believe the most valuable things take time to get right — and that the organisations who understand this are the ones worth working with.</p>
+        <p>We're a small team, deliberately. That's not a constraint; it's a choice. We stay small to stay sharp — and to give every engagement the focus it deserves.</p>
+      </div>
+      <div>
+        <div style="background:var(--paper-warm);border:1px solid var(--border);padding:3rem;aspect-ratio:4/3;display:flex;align-items:flex-end;">
+          <div>
+            <p style="font-family:var(--serif);font-size:1.6rem;font-weight:300;line-height:1.3;color:var(--ink-soft);font-style:italic;">"Two brothers who built a bridge across the impossible — not because they had to, but because they believed it could be done."</p>
+            <p style="margin-top:1rem;font-family:var(--mono);font-size:0.65rem;color:var(--ink-muted);letter-spacing:0.1em;text-transform:uppercase;">— The Ramayana, on Nala &amp; Nila</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="origin-section">
+      <p class="eyebrow">The origin</p>
+      <div class="origin-grid">
+        <div class="origin-sidebar">
+          <h2>Nala &amp; Nila.<br><em>The builders.</em></h2>
+          <div class="origin-note">
+            <p class="origin-note-label">From the Ramayana</p>
+            <p>Nala was the son of Vishwakarma, the divine architect. Nila was blessed so that anything he touched would float. Together, they led the construction of Rama Setu — a bridge across the sea that no one had built before, and most believed impossible.</p>
+          </div>
+        </div>
+        <div class="origin-body">
+          <p class="lead">I grew up hearing the Ramayana. Like most of us, I knew the broad strokes — the heroism, the exile, the war. But one part of the story always quietly stayed with me: Nala and Nila, the two brothers who built the bridge.</p>
+          <p>They didn't lead armies. They didn't wield weapons. What they brought was something rarer — <em>craft and blessing working in tandem</em>. Nala had the knowledge of an architect; Nila had a gift that made the impossible float. Neither alone could have done it. Together, they changed the course of everything.</p>
+          <p>When I started thinking seriously about what kind of company I wanted to build, I kept returning to that image. I had watched businesses — good ones, with good people — struggle not because they lacked ambition, but because they lacked the right tools. They were spending enormous energy on things that could be handled: repetitive decisions, slow workflows, information that sat in silos, processes that should have run themselves.</p>
+          <div class="origin-pullquote">
+            <p>What if technology could be what Nila's gift was — the thing that makes the heavy things float, so the real builders can focus on building?</p>
+          </div>
+          <p>That's the idea at the heart of Nalanil Labs. We combine the structured thinking of the architect with the practical power of AI, automation, and technology — not to replace people, but to lift the weight off them. To give small and mid-sized businesses the kind of capability that was once only available to the very large.</p>
+          <p>The name Nalanil carries both brothers — inseparable, complementary. That's intentional. We don't believe in technology for its own sake, and we don't believe in strategy without the means to execute it. The bridge only got built because Nala knew <em>how</em>, and Nila made it <em>possible</em>.</p>
+          <p>We're here to do the same for the businesses we work with. One bridge at a time.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="values-section">
+      <p class="values-label">What guides us</p>
+      <div class="values-grid">
+        <div class="value-item">
+          <h4>Honesty over comfort</h4>
+          <p>We say what we see. Even when it's not what someone wants to hear. Especially then.</p>
+        </div>
+        <div class="value-item">
+          <h4>Depth over breadth</h4>
+          <p>We'd rather know one thing well than several things superficially.</p>
+        </div>
+        <div class="value-item">
+          <h4>Restraint as craft</h4>
+          <p>Knowing what to leave out is as important as knowing what to put in. This applies to products, advice, and language.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <footer>
+    <div class="footer-inner">
+      <span class="footer-logo">Nalanil Labs</span>
+      <span class="footer-copy">© 2024 Nalanil Labs. nalanil.com</span>
+    </div>
+  </footer>
+</div>
+
+<!-- INQUIRY -->
+<div class="page" id="page-inquiry">
+  <div class="container">
+    <div class="inquiry-layout">
+      <div class="inquiry-info">
+        <h2>Let's start a conversation</h2>
+        <p>We take on a small number of engagements at a time, to ensure every partner gets the attention their work deserves. If you'd like to explore working together, we'd love to hear from you.</p>
+        <p>We'll respond within two business days.</p>
+        <div class="contact-detail">
+          <span class="cd-label">Email</span>
+          <span class="cd-val">solutions@nalanil.com</span>
+        </div>
+        <div class="contact-detail">
+          <span class="cd-label">Website</span>
+          <span class="cd-val">nalanil.com</span>
+        </div>
+        <div class="contact-detail">
+          <span class="cd-label">Response time</span>
+          <span class="cd-val">Within 2 business days</span>
+        </div>
+      </div>
+
+      <div>
+        <div id="success-msg" class="success-msg">Thank you — your message has been received. We'll be in touch shortly.</div>
+        <form
+          class="form-grid"
+          id="inquiry-form"
+          action="https://formsubmit.co/solutions@nalanil.com"
+          method="POST"
+        >
+          <input type="hidden" name="_subject" value="New inquiry from nalanil.com">
+          <input type="hidden" name="_template" value="table">
+          <input type="hidden" name="_next" id="form-next" value="">
+          <input type="text" name="_honey" tabindex="-1" autocomplete="off" style="display:none">
+          <div class="form-row">
+            <div class="form-field">
+              <label for="first-name">First name</label>
+              <input id="first-name" name="first_name" type="text" placeholder="Your first name" required>
+            </div>
+            <div class="form-field">
+              <label for="last-name">Last name</label>
+              <input id="last-name" name="last_name" type="text" placeholder="Your last name" required>
+            </div>
+          </div>
+          <div class="form-field">
+            <label for="email">Email</label>
+            <input id="email" name="email" type="email" placeholder="your@email.com" required>
+          </div>
+          <div class="form-field">
+            <label for="organisation">Organisation</label>
+            <input id="organisation" name="organisation" type="text" placeholder="Company or project name" required>
+          </div>
+          <div class="form-field">
+            <label for="area-of-interest">Area of interest</label>
+            <select id="area-of-interest" name="area_of_interest" required>
+              <option value="" disabled selected>Select one</option>
+              <option>Automated Project Workflow</option>
+              <option>Strategy &amp; Consulting</option>
+              <option>Something else</option>
+            </select>
+          </div>
+          <div class="form-field">
+            <label for="project-details">Tell us about your project</label>
+            <textarea id="project-details" name="project_details" placeholder="What are you working on? What's the challenge? What does success look like?" required></textarea>
+          </div>
+          <div class="form-submit">
+            <button class="btn-submit" type="submit">Send inquiry</button>
+          </div>
+          <p class="form-note">We respect your privacy. Your information is never shared or sold.</p>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <footer>
+    <div class="footer-inner">
+      <span class="footer-logo">Nalanil Labs</span>
+      <span class="footer-copy">© 2024 Nalanil Labs. nalanil.com</span>
+    </div>
+  </footer>
+</div>
+
+<script>
+  function showPage(name) {
+    var pages = document.querySelectorAll('.page');
+    for (var i = 0; i < pages.length; i++) {
+      pages[i].classList.remove('visible');
+    }
+    var links = document.querySelectorAll('.nav-links a');
+    for (var j = 0; j < links.length; j++) {
+      links[j].classList.remove('active');
+    }
+    var page = document.getElementById('page-' + name);
+    if (page) { page.classList.add('visible'); window.scrollTo(0, 0); }
+    var link = document.querySelector('[data-page="' + name + '"]');
+    if (link) { link.classList.add('active'); }
+  }
+
+  (function () {
+    var nextField = document.getElementById('form-next');
+    if (nextField) {
+      nextField.value = window.location.origin + window.location.pathname + '?submitted=1';
+    }
+
+    var params = new URLSearchParams(window.location.search);
+    if (params.get('submitted') === '1') {
+      showPage('inquiry');
+      document.getElementById('inquiry-form').style.display = 'none';
+      document.getElementById('success-msg').style.display = 'block';
+      window.history.replaceState({}, document.title, window.location.pathname);
+    }
+  }());
+</script>
+</body>
+</html>
