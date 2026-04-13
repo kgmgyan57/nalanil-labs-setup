@@ -18,6 +18,7 @@
     --paper-card: #ffffff;
     --accent: #2d4a3e;
     --accent-light: #e8f0ec;
+    --accent-hover: rgba(45,74,62,0.06);
     --border: rgba(26,26,24,0.1);
     --border-med: rgba(26,26,24,0.18);
     --serif: 'Cormorant Garamond', Georgia, serif;
@@ -42,7 +43,7 @@
   nav {
     position: fixed; top: 0; left: 0; right: 0;
     height: var(--nav-h);
-    background: rgba(249,248,244,0.93);
+    background: rgba(249,248,244,0.95);
     backdrop-filter: blur(12px);
     border-bottom: 1px solid var(--border);
     z-index: 100;
@@ -65,6 +66,40 @@
   }
   .nav-links a:hover, .nav-links a.active { color: var(--ink); border-bottom-color: var(--ink); }
 
+  /* HAMBURGER */
+  .hamburger {
+    display: none; flex-direction: column; gap: 5px; cursor: pointer;
+    background: none; border: none; padding: 6px; z-index: 200;
+  }
+  .hamburger span {
+    display: block; width: 22px; height: 1.5px; background: var(--ink);
+    transition: transform 0.3s ease, opacity 0.3s ease;
+    transform-origin: center;
+  }
+  .hamburger.open span:nth-child(1) { transform: translateY(6.5px) rotate(45deg); }
+  .hamburger.open span:nth-child(2) { opacity: 0; transform: scaleX(0); }
+  .hamburger.open span:nth-child(3) { transform: translateY(-6.5px) rotate(-45deg); }
+
+  /* MOBILE OVERLAY NAV */
+  .mobile-nav {
+    display: none; position: fixed; inset: 0; z-index: 150;
+    background: rgba(249,248,244,0.98); backdrop-filter: blur(16px);
+    flex-direction: column; align-items: center; justify-content: center;
+    gap: 2.5rem;
+    opacity: 0; transform: translateY(-10px);
+    transition: opacity 0.35s ease, transform 0.35s ease;
+    pointer-events: none;
+  }
+  .mobile-nav.open {
+    display: flex; opacity: 1; transform: translateY(0); pointer-events: all;
+  }
+  .mobile-nav a {
+    font-family: var(--serif); font-size: 2.2rem; font-weight: 300;
+    color: var(--ink); text-decoration: none; cursor: pointer;
+    letter-spacing: 0.01em; transition: color 0.2s;
+  }
+  .mobile-nav a:hover { color: var(--accent); }
+
   /* PAGES */
   .page { display: none; min-height: 100vh; padding-top: var(--nav-h); animation: fadeUp 0.45s ease both; }
   .page.visible { display: block; }
@@ -72,6 +107,21 @@
     from { opacity: 0; transform: translateY(10px); }
     to   { opacity: 1; transform: translateY(0); }
   }
+
+  /* SCROLL ANIMATIONS */
+  [data-animate] {
+    opacity: 0;
+    transform: translateY(22px);
+    transition: opacity 0.65s ease, transform 0.65s ease;
+  }
+  [data-animate].in-view {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  [data-animate][data-delay="1"] { transition-delay: 0.1s; }
+  [data-animate][data-delay="2"] { transition-delay: 0.2s; }
+  [data-animate][data-delay="3"] { transition-delay: 0.3s; }
+  [data-animate][data-delay="4"] { transition-delay: 0.4s; }
 
   /* LAYOUT */
   .container { max-width: var(--max); margin: 0 auto; padding: 0 2.5rem; }
@@ -110,7 +160,7 @@
   .btn-group { display: flex; gap: 1rem; align-items: center; flex-wrap: wrap; }
 
   /* HOME */
-  .home-hero { padding: 9rem 0 6rem; border-bottom: 1px solid var(--border); }
+  .home-hero { padding: 9rem 0 5rem; border-bottom: 1px solid var(--border); }
   .hero-eyebrow {
     font-family: var(--mono); font-size: 0.72rem; letter-spacing: 0.18em;
     text-transform: uppercase; color: var(--ink-muted); margin-bottom: 1.75rem;
@@ -125,6 +175,25 @@
     font-size: 1.05rem; font-weight: 300; color: var(--ink-soft);
     max-width: 480px; line-height: 1.75; margin-bottom: 3rem;
   }
+
+  /* STATS STRIP */
+  .hero-stats {
+    margin-top: 4rem; padding-top: 3rem; border-top: 1px solid var(--border);
+    display: grid; grid-template-columns: repeat(3, 1fr); gap: 0;
+  }
+  .stat-item {
+    padding: 0 2.5rem 0 0; border-right: 1px solid var(--border);
+  }
+  .stat-item:first-child { padding-left: 0; }
+  .stat-item:last-child { border-right: none; padding-left: 2.5rem; }
+  .stat-item:nth-child(2) { padding-left: 2.5rem; }
+  .stat-num {
+    font-family: var(--serif); font-size: 2.8rem; font-weight: 300;
+    line-height: 1; color: var(--ink); margin-bottom: 0.4rem;
+  }
+  .stat-num em { font-style: normal; color: var(--accent); }
+  .stat-label { font-family: var(--mono); font-size: 0.67rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--ink-muted); }
+
   .home-intro {
     padding: 7rem 0; display: grid; grid-template-columns: 1fr 1fr;
     gap: 6rem; align-items: start; border-bottom: 1px solid var(--border);
@@ -138,10 +207,16 @@
   .intro-features { display: flex; flex-direction: column; }
   .feature-row {
     display: flex; align-items: flex-start; gap: 1.5rem;
-    padding: 1.75rem 0; border-bottom: 1px solid var(--border);
+    padding: 1.75rem 1rem; border-bottom: 1px solid var(--border);
+    margin: 0 -1rem;
+    border-radius: 2px;
+    transition: background 0.2s ease;
+    cursor: default;
   }
   .feature-row:first-child { border-top: 1px solid var(--border); }
-  .feature-num { font-family: var(--mono); font-size: 0.7rem; color: var(--ink-muted); padding-top: 3px; min-width: 24px; }
+  .feature-row:hover { background: var(--accent-hover); }
+  .feature-num { font-family: var(--mono); font-size: 0.7rem; color: var(--ink-muted); padding-top: 3px; min-width: 24px; transition: color 0.2s; }
+  .feature-row:hover .feature-num { color: var(--accent); }
   .feature-text strong { display: block; font-size: 0.9rem; font-weight: 500; margin-bottom: 0.25rem; color: var(--ink); }
   .feature-text p { font-size: 0.85rem; color: var(--ink-soft); font-weight: 300; line-height: 1.6; }
 
@@ -166,10 +241,15 @@
   .workflow-steps { display: flex; flex-direction: column; }
   .step-row {
     display: grid; grid-template-columns: 60px 1fr; gap: 2rem;
-    padding: 2.25rem 0; border-bottom: 1px solid var(--border); align-items: start;
+    padding: 2.25rem 1rem; border-bottom: 1px solid var(--border); align-items: start;
+    margin: 0 -1rem; border-left: 2px solid transparent;
+    transition: background 0.2s ease, border-left-color 0.25s ease;
+    cursor: default;
   }
   .step-row:first-child { border-top: 1px solid var(--border); }
-  .step-num { font-family: var(--mono); font-size: 0.65rem; color: var(--ink-muted); letter-spacing: 0.08em; padding-top: 4px; }
+  .step-row:hover { background: var(--accent-hover); border-left-color: var(--accent); }
+  .step-num { font-family: var(--mono); font-size: 0.65rem; color: var(--ink-muted); letter-spacing: 0.08em; padding-top: 4px; transition: color 0.2s; }
+  .step-row:hover .step-num { color: var(--accent); }
   .step-body h4 { font-family: var(--serif); font-size: 1.25rem; font-weight: 400; margin-bottom: 0.5rem; }
   .step-body p { font-size: 0.85rem; color: var(--ink-soft); line-height: 1.75; font-weight: 300; }
   .step-tag {
@@ -191,6 +271,48 @@
   }
   .about-text h2 { font-family: var(--serif); font-size: 2.5rem; font-weight: 300; line-height: 1.15; margin-bottom: 2rem; }
   .about-text p { font-size: 0.92rem; color: var(--ink-soft); line-height: 1.85; font-weight: 300; margin-bottom: 1.25rem; }
+
+  /* ABOUT IMAGE BLOCK */
+  .about-image-block {
+    background: var(--paper-warm); border: 1px solid var(--border);
+    padding: 3rem; aspect-ratio: 4/3; display: flex;
+    flex-direction: column; justify-content: space-between;
+    position: relative; overflow: hidden;
+  }
+  .about-image-block::before {
+    content: '';
+    position: absolute; top: 0; right: 0;
+    width: 180px; height: 180px;
+    border-bottom-left-radius: 100%;
+    background: var(--accent-light);
+    opacity: 0.7;
+  }
+  .about-image-block::after {
+    content: '';
+    position: absolute; bottom: 3rem; left: 3rem;
+    width: 40px; height: 2px;
+    background: var(--accent);
+    opacity: 0.5;
+  }
+  .about-img-ornament {
+    font-family: var(--serif); font-size: 7rem; font-weight: 300;
+    line-height: 1; color: var(--accent); opacity: 0.12;
+    position: absolute; top: 1.5rem; left: 2.5rem;
+    pointer-events: none; user-select: none;
+  }
+  .about-img-quote {
+    position: relative; z-index: 1; margin-top: auto;
+  }
+  .about-img-quote p {
+    font-family: var(--serif); font-size: 1.4rem; font-weight: 300;
+    font-style: italic; line-height: 1.35; color: var(--ink-soft);
+    margin-bottom: 1rem;
+  }
+  .about-img-source {
+    font-family: var(--mono); font-size: 0.65rem; color: var(--ink-muted);
+    letter-spacing: 0.1em; text-transform: uppercase;
+  }
+
   .origin-section { padding: 6rem 0; border-bottom: 1px solid var(--border); }
   .origin-grid { display: grid; grid-template-columns: 1fr 2fr; gap: 6rem; align-items: start; margin-top: 3rem; }
   .origin-sidebar h2 { font-family: var(--serif); font-size: 2.2rem; font-weight: 300; line-height: 1.15; }
@@ -203,9 +325,20 @@
   .origin-body p.lead { font-size: 1.05rem; color: var(--ink); }
   .origin-pullquote { background: var(--paper-warm); border-left: 2px solid var(--accent); padding: 1.75rem 2rem; }
   .origin-pullquote p { font-family: var(--serif); font-size: 1.35rem; font-weight: 300; font-style: italic; line-height: 1.4; color: var(--ink); }
+
   .values-section { padding: 5rem 0; border-bottom: 1px solid var(--border); }
   .values-label { font-family: var(--mono); font-size: 0.7rem; letter-spacing: 0.16em; text-transform: uppercase; color: var(--ink-muted); margin-bottom: 3rem; }
-  .values-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 4rem; }
+  .values-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 2rem; }
+  .value-item {
+    padding: 2rem; border: 1px solid var(--border);
+    transition: border-color 0.2s ease, box-shadow 0.2s ease, transform 0.2s ease;
+    cursor: default;
+  }
+  .value-item:hover {
+    border-color: var(--border-med);
+    box-shadow: 0 4px 20px rgba(26,26,24,0.06);
+    transform: translateY(-2px);
+  }
   .value-item h4 { font-family: var(--serif); font-size: 1.3rem; font-weight: 400; margin-bottom: 0.75rem; }
   .value-item p { font-size: 0.85rem; color: var(--ink-soft); line-height: 1.75; font-weight: 300; }
 
@@ -253,20 +386,34 @@
   .footer-inner {
     max-width: var(--max); margin: 0 auto; padding: 0 2.5rem;
     display: flex; align-items: center; justify-content: space-between;
+    flex-wrap: wrap; gap: 1rem;
   }
+  .footer-left { display: flex; flex-direction: column; gap: 0.4rem; }
   .footer-logo { font-family: var(--serif); font-size: 1rem; font-weight: 300; color: var(--ink-soft); }
+  .footer-tagline { font-family: var(--mono); font-size: 0.62rem; color: var(--ink-muted); letter-spacing: 0.08em; }
+  .footer-right { display: flex; flex-direction: column; align-items: flex-end; gap: 0.4rem; }
   .footer-copy { font-family: var(--mono); font-size: 0.65rem; color: var(--ink-muted); letter-spacing: 0.08em; }
+  .footer-email { font-family: var(--mono); font-size: 0.65rem; color: var(--ink-soft); letter-spacing: 0.06em; text-decoration: none; transition: color 0.2s; }
+  .footer-email:hover { color: var(--accent); }
 
   /* MOBILE */
   @media (max-width: 768px) {
     .nav-links { display: none; }
+    .hamburger { display: flex; }
     .home-intro, .about-split, .workflow-intro, .origin-grid { grid-template-columns: 1fr; gap: 3rem; }
-    .values-grid { grid-template-columns: 1fr; gap: 2rem; }
+    .values-grid { grid-template-columns: 1fr; gap: 1.5rem; }
     .inquiry-layout { grid-template-columns: 1fr; gap: 4rem; }
     .form-row { grid-template-columns: 1fr; }
     .solutions-cta { flex-direction: column; align-items: flex-start; }
     .time-callout { flex-direction: column; gap: 1rem; padding: 2rem; }
     .time-num { font-size: 3rem; }
+    .hero-stats { grid-template-columns: 1fr; gap: 1.5rem; }
+    .stat-item { border-right: none; border-bottom: 1px solid var(--border); padding: 0 0 1.5rem; }
+    .stat-item:last-child { border-bottom: none; }
+    .stat-item:nth-child(2) { padding-left: 0; }
+    .step-row { grid-template-columns: 50px 1fr; }
+    .about-image-block { aspect-ratio: auto; min-height: 280px; }
+    .footer-right { align-items: flex-start; }
   }
 </style>
 </head>
@@ -281,46 +428,71 @@
       <li><a href="#" onclick="showPage('about'); return false;" data-page="about">About</a></li>
       <li><a href="#" onclick="showPage('inquiry'); return false;" data-page="inquiry">Inquiry</a></li>
     </ul>
+    <button class="hamburger" id="hamburger" aria-label="Open menu">
+      <span></span><span></span><span></span>
+    </button>
   </div>
 </nav>
+
+<!-- MOBILE NAV OVERLAY -->
+<div class="mobile-nav" id="mobile-nav">
+  <a href="#" onclick="showPage('home'); closeMobileNav(); return false;">Home</a>
+  <a href="#" onclick="showPage('solutions'); closeMobileNav(); return false;">Solutions</a>
+  <a href="#" onclick="showPage('about'); closeMobileNav(); return false;">About</a>
+  <a href="#" onclick="showPage('inquiry'); closeMobileNav(); return false;">Inquiry</a>
+</div>
 
 <!-- HOME -->
 <div class="page visible" id="page-home">
   <div class="container">
     <div class="home-hero">
-      <p class="hero-eyebrow">Nalanil Labs — Est. 2024</p>
-      <h1 class="hero-headline">Where careful <em>thinking</em> meets purposeful work.</h1>
-      <p class="hero-sub">We build things that matter — with clarity, craft, and a long view. Every project begins with a question worth asking.</p>
-      <div class="btn-group">
+      <p class="hero-eyebrow" data-animate>Nalanil Labs — Est. 2024</p>
+      <h1 class="hero-headline" data-animate data-delay="1">Where careful <em>thinking</em> meets purposeful work.</h1>
+      <p class="hero-sub" data-animate data-delay="2">We build things that matter — with clarity, craft, and a long view. Every project begins with a question worth asking.</p>
+      <div class="btn-group" data-animate data-delay="3">
         <a class="btn-primary" href="#" onclick="showPage('solutions'); return false;">Explore Solutions</a>
         <a class="btn-ghost" href="#" onclick="showPage('inquiry'); return false;">Get in touch</a>
+      </div>
+      <div class="hero-stats" data-animate data-delay="4">
+        <div class="stat-item">
+          <div class="stat-num">10–15<em>wk</em></div>
+          <div class="stat-label">Given back to your team each year</div>
+        </div>
+        <div class="stat-item">
+          <div class="stat-num">5</div>
+          <div class="stat-label">Step automated workflow</div>
+        </div>
+        <div class="stat-item">
+          <div class="stat-num">1</div>
+          <div class="stat-label">Solution, deeply done</div>
+        </div>
       </div>
     </div>
   </div>
 
   <div class="container">
     <div class="home-intro">
-      <div>
+      <div data-animate>
         <p class="intro-label">Our approach</p>
         <h2 class="intro-title">Built on a foundation of rigorous curiosity</h2>
         <p class="intro-body">Nalanil Labs is a focused practice — small enough to care, capable enough to deliver. We work at the intersection of clear thinking and practical execution, with partners who share our standards.</p>
       </div>
       <div class="intro-features">
-        <div class="feature-row">
+        <div class="feature-row" data-animate>
           <span class="feature-num">01</span>
           <div class="feature-text">
             <strong>Thoughtful by design</strong>
             <p>Every engagement begins with listening. We ask until we understand, then we build.</p>
           </div>
         </div>
-        <div class="feature-row">
+        <div class="feature-row" data-animate data-delay="1">
           <span class="feature-num">02</span>
           <div class="feature-text">
             <strong>Craft over volume</strong>
             <p>We don't scale through shortcuts. Quality is the only metric that compounds.</p>
           </div>
         </div>
-        <div class="feature-row">
+        <div class="feature-row" data-animate data-delay="2">
           <span class="feature-num">03</span>
           <div class="feature-text">
             <strong>Long-term thinking</strong>
@@ -333,8 +505,14 @@
 
   <footer>
     <div class="footer-inner">
-      <span class="footer-logo">Nalanil Labs</span>
-      <span class="footer-copy">© 2024 Nalanil Labs. nalanil.com</span>
+      <div class="footer-left">
+        <span class="footer-logo">Nalanil Labs</span>
+        <span class="footer-tagline">Built with craft. Delivered with care.</span>
+      </div>
+      <div class="footer-right">
+        <a href="mailto:solutions@nalanil.com" class="footer-email">solutions@nalanil.com</a>
+        <span class="footer-copy">© 2026 Nalanil Labs. nalanil.com</span>
+      </div>
     </div>
   </footer>
 </div>
@@ -343,18 +521,18 @@
 <div class="page" id="page-solutions">
   <div class="container">
     <div class="page-header">
-      <p class="eyebrow">What we do</p>
-      <h1>Technology that does the heavy lifting</h1>
-      <p>We build automated systems that give your team back the time they've been quietly losing — so they can focus on the work that actually moves things forward.</p>
+      <p class="eyebrow" data-animate>What we do</p>
+      <h1 data-animate data-delay="1">Technology that does the heavy lifting</h1>
+      <p data-animate data-delay="2">We build automated systems that give your team back the time they've been quietly losing — so they can focus on the work that actually moves things forward.</p>
     </div>
 
     <div class="workflow-section">
-      <div class="workflow-intro">
+      <div class="workflow-intro" data-animate>
         <h2>Automated Project Workflow</h2>
         <p>Most businesses run on a quiet tax: hours spent chasing updates, formatting reports, routing approvals, and manually moving work from one stage to the next. It doesn't feel like much on any given Tuesday — but it adds up fast. Our automated project workflow is designed to eliminate that tax entirely, replacing manual coordination with systems that run themselves.</p>
       </div>
 
-      <div class="time-callout">
+      <div class="time-callout" data-animate>
         <div class="time-num">10–15<br><span>weeks</span></div>
         <div class="time-text">
           <strong>Given back to your team, every year</strong>
@@ -363,7 +541,7 @@
       </div>
 
       <div class="workflow-steps">
-        <div class="step-row">
+        <div class="step-row" data-animate>
           <div class="step-num">Step 01</div>
           <div class="step-body">
             <h4>Intake & Triage</h4>
@@ -371,7 +549,7 @@
             <span class="step-tag">Automated routing</span>
           </div>
         </div>
-        <div class="step-row">
+        <div class="step-row" data-animate data-delay="1">
           <div class="step-num">Step 02</div>
           <div class="step-body">
             <h4>Assignment & Kickoff</h4>
@@ -379,7 +557,7 @@
             <span class="step-tag">AI-assisted delegation</span>
           </div>
         </div>
-        <div class="step-row">
+        <div class="step-row" data-animate data-delay="2">
           <div class="step-num">Step 03</div>
           <div class="step-body">
             <h4>Progress & Handoffs</h4>
@@ -387,7 +565,7 @@
             <span class="step-tag">Smart notifications</span>
           </div>
         </div>
-        <div class="step-row">
+        <div class="step-row" data-animate data-delay="3">
           <div class="step-num">Step 04</div>
           <div class="step-body">
             <h4>Approval & Sign-off</h4>
@@ -395,7 +573,7 @@
             <span class="step-tag">Automated follow-up</span>
           </div>
         </div>
-        <div class="step-row">
+        <div class="step-row" data-animate data-delay="4">
           <div class="step-num">Step 05</div>
           <div class="step-body">
             <h4>Reporting & Close</h4>
@@ -406,7 +584,7 @@
       </div>
     </div>
 
-    <div class="solutions-cta">
+    <div class="solutions-cta" data-animate>
       <h2>Ready to see what this could look like for your business?</h2>
       <a class="btn-primary" href="#" onclick="showPage('inquiry'); return false;">Start a conversation</a>
     </div>
@@ -414,8 +592,14 @@
 
   <footer>
     <div class="footer-inner">
-      <span class="footer-logo">Nalanil Labs</span>
-      <span class="footer-copy">© 2024 Nalanil Labs. nalanil.com</span>
+      <div class="footer-left">
+        <span class="footer-logo">Nalanil Labs</span>
+        <span class="footer-tagline">Built with craft. Delivered with care.</span>
+      </div>
+      <div class="footer-right">
+        <a href="mailto:solutions@nalanil.com" class="footer-email">solutions@nalanil.com</a>
+        <span class="footer-copy">© 2026 Nalanil Labs. nalanil.com</span>
+      </div>
     </div>
   </footer>
 </div>
@@ -424,37 +608,38 @@
 <div class="page" id="page-about">
   <div class="container">
     <div class="page-header">
-      <p class="eyebrow">Who we are</p>
-      <h1>A small lab with a long view</h1>
+      <p class="eyebrow" data-animate>Who we are</p>
+      <h1 data-animate data-delay="1">A small lab with a long view</h1>
     </div>
 
     <div class="about-split">
-      <div class="about-text">
+      <div class="about-text" data-animate>
         <h2>A name born from an ancient story. A mission shaped by a modern one.</h2>
         <p>Nalanil Labs was founded as a quiet counterpoint to the culture of fast, cheap, and disposable. We believe the most valuable things take time to get right — and that the organisations who understand this are the ones worth working with.</p>
         <p>We're a small team, deliberately. That's not a constraint; it's a choice. We stay small to stay sharp — and to give every engagement the focus it deserves.</p>
       </div>
-      <div>
-        <div style="background:var(--paper-warm);border:1px solid var(--border);padding:3rem;aspect-ratio:4/3;display:flex;align-items:flex-end;">
-          <div>
-            <p style="font-family:var(--serif);font-size:1.6rem;font-weight:300;line-height:1.3;color:var(--ink-soft);font-style:italic;">"Two brothers who built a bridge across the impossible — not because they had to, but because they believed it could be done."</p>
-            <p style="margin-top:1rem;font-family:var(--mono);font-size:0.65rem;color:var(--ink-muted);letter-spacing:0.1em;text-transform:uppercase;">— The Ramayana, on Nala &amp; Nila</p>
+      <div data-animate data-delay="1">
+        <div class="about-image-block">
+          <span class="about-img-ornament">"</span>
+          <div class="about-img-quote">
+            <p>Two brothers who built a bridge across the impossible — not because they had to, but because they believed it could be done.</p>
+            <span class="about-img-source">— The Ramayana, on Nala &amp; Nila</span>
           </div>
         </div>
       </div>
     </div>
 
     <div class="origin-section">
-      <p class="eyebrow">The origin</p>
+      <p class="eyebrow" data-animate>The origin</p>
       <div class="origin-grid">
-        <div class="origin-sidebar">
+        <div class="origin-sidebar" data-animate data-delay="1">
           <h2>Nala &amp; Nila.<br><em>The builders.</em></h2>
           <div class="origin-note">
             <p class="origin-note-label">From the Ramayana</p>
             <p>Nala was the son of Vishwakarma, the divine architect. Nila was blessed so that anything he touched would float. Together, they led the construction of Rama Setu — a bridge across the sea that no one had built before, and most believed impossible.</p>
           </div>
         </div>
-        <div class="origin-body">
+        <div class="origin-body" data-animate data-delay="2">
           <p class="lead">I grew up hearing the Ramayana. Like most of us, I knew the broad strokes — the heroism, the exile, the war. But one part of the story always quietly stayed with me: Nala and Nila, the two brothers who built the bridge.</p>
           <p>They didn't lead armies. They didn't wield weapons. What they brought was something rarer — <em>craft and blessing working in tandem</em>. Nala had the knowledge of an architect; Nila had a gift that made the impossible float. Neither alone could have done it. Together, they changed the course of everything.</p>
           <p>When I started thinking seriously about what kind of company I wanted to build, I kept returning to that image. I had watched businesses — good ones, with good people — struggle not because they lacked ambition, but because they lacked the right tools. They were spending enormous energy on things that could be handled: repetitive decisions, slow workflows, information that sat in silos, processes that should have run themselves.</p>
@@ -469,17 +654,17 @@
     </div>
 
     <div class="values-section">
-      <p class="values-label">What guides us</p>
+      <p class="values-label" data-animate>What guides us</p>
       <div class="values-grid">
-        <div class="value-item">
+        <div class="value-item" data-animate data-delay="1">
           <h4>Honesty over comfort</h4>
           <p>We say what we see. Even when it's not what someone wants to hear. Especially then.</p>
         </div>
-        <div class="value-item">
+        <div class="value-item" data-animate data-delay="2">
           <h4>Depth over breadth</h4>
           <p>We'd rather know one thing well than several things superficially.</p>
         </div>
-        <div class="value-item">
+        <div class="value-item" data-animate data-delay="3">
           <h4>Restraint as craft</h4>
           <p>Knowing what to leave out is as important as knowing what to put in. This applies to products, advice, and language.</p>
         </div>
@@ -489,8 +674,14 @@
 
   <footer>
     <div class="footer-inner">
-      <span class="footer-logo">Nalanil Labs</span>
-      <span class="footer-copy">© 2024 Nalanil Labs. nalanil.com</span>
+      <div class="footer-left">
+        <span class="footer-logo">Nalanil Labs</span>
+        <span class="footer-tagline">Built with craft. Delivered with care.</span>
+      </div>
+      <div class="footer-right">
+        <a href="mailto:solutions@nalanil.com" class="footer-email">solutions@nalanil.com</a>
+        <span class="footer-copy">© 2026 Nalanil Labs. nalanil.com</span>
+      </div>
     </div>
   </footer>
 </div>
@@ -499,7 +690,7 @@
 <div class="page" id="page-inquiry">
   <div class="container">
     <div class="inquiry-layout">
-      <div class="inquiry-info">
+      <div class="inquiry-info" data-animate>
         <h2>Let's start a conversation</h2>
         <p>We take on a small number of engagements at a time, to ensure every partner gets the attention their work deserves. If you'd like to explore working together, we'd love to hear from you.</p>
         <p>We'll respond within two business days.</p>
@@ -517,7 +708,7 @@
         </div>
       </div>
 
-      <div>
+      <div data-animate data-delay="1">
         <div id="success-msg" class="success-msg">Thank you — your message has been received. We'll be in touch shortly.</div>
         <form
           class="form-grid"
@@ -571,28 +762,80 @@
 
   <footer>
     <div class="footer-inner">
-      <span class="footer-logo">Nalanil Labs</span>
-      <span class="footer-copy">© 2024 Nalanil Labs. nalanil.com</span>
+      <div class="footer-left">
+        <span class="footer-logo">Nalanil Labs</span>
+        <span class="footer-tagline">Built with craft. Delivered with care.</span>
+      </div>
+      <div class="footer-right">
+        <a href="mailto:solutions@nalanil.com" class="footer-email">solutions@nalanil.com</a>
+        <span class="footer-copy">© 2026 Nalanil Labs. nalanil.com</span>
+      </div>
     </div>
   </footer>
 </div>
 
 <script>
+  /* ── PAGE NAVIGATION ── */
   function showPage(name) {
-    var pages = document.querySelectorAll('.page');
-    for (var i = 0; i < pages.length; i++) {
-      pages[i].classList.remove('visible');
-    }
-    var links = document.querySelectorAll('.nav-links a');
-    for (var j = 0; j < links.length; j++) {
-      links[j].classList.remove('active');
-    }
+    document.querySelectorAll('.page').forEach(function(p) { p.classList.remove('visible'); });
+    document.querySelectorAll('.nav-links a').forEach(function(a) { a.classList.remove('active'); });
     var page = document.getElementById('page-' + name);
-    if (page) { page.classList.add('visible'); window.scrollTo(0, 0); }
+    if (page) {
+      page.classList.add('visible');
+      window.scrollTo(0, 0);
+      // re-trigger animations on newly visible page
+      setTimeout(initAnimations, 50);
+    }
     var link = document.querySelector('[data-page="' + name + '"]');
     if (link) { link.classList.add('active'); }
   }
 
+  /* ── MOBILE NAV ── */
+  var hamburger = document.getElementById('hamburger');
+  var mobileNav = document.getElementById('mobile-nav');
+
+  hamburger.addEventListener('click', function() {
+    var isOpen = mobileNav.classList.contains('open');
+    if (isOpen) {
+      closeMobileNav();
+    } else {
+      mobileNav.classList.add('open');
+      hamburger.classList.add('open');
+      document.body.style.overflow = 'hidden';
+    }
+  });
+
+  function closeMobileNav() {
+    mobileNav.classList.remove('open');
+    hamburger.classList.remove('open');
+    document.body.style.overflow = '';
+  }
+
+  /* ── SCROLL ANIMATIONS ── */
+  function initAnimations() {
+    var observer = new IntersectionObserver(function(entries) {
+      entries.forEach(function(entry) {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('in-view');
+          observer.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' });
+
+    document.querySelectorAll('.page.visible [data-animate]').forEach(function(el) {
+      if (!el.classList.contains('in-view')) {
+        observer.observe(el);
+      }
+    });
+  }
+
+  // Kick off animations on initial load
+  document.addEventListener('DOMContentLoaded', function() {
+    // Immediately show hero elements on page load (already in view)
+    setTimeout(initAnimations, 100);
+  });
+
+  /* ── FORM HANDLING ── */
   (function () {
     var nextField = document.getElementById('form-next');
     if (nextField) {
