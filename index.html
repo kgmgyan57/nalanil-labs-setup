@@ -3,7 +3,18 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Nalanil Labs</title>
+<title>Nalanil Labs — AI Automation & Process Mining for Growing Businesses</title>
+<meta name="description" content="Nalanil Labs helps SMBs reclaim time through process mining, AI-powered automation, and intelligent workflow design. We sit with your team, map your processes, and automate what slows you down.">
+<meta name="keywords" content="AI automation, process mining, business process automation, workflow automation, SMB automation, AI consulting, process optimisation, intelligent automation">
+<meta name="robots" content="index, follow">
+<link rel="canonical" href="https://nalanil.com">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://nalanil.com">
+<meta property="og:title" content="Nalanil Labs — AI Automation & Process Mining for Growing Businesses">
+<meta property="og:description" content="We sit with your team, map how work actually moves, and automate what slows you down — giving your people their time back.">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Nalanil Labs — AI Automation & Process Mining">
+<meta name="twitter:description" content="Process mining and AI-powered automation for growing businesses.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=DM+Mono:wght@300;400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
 <style>
@@ -381,6 +392,48 @@
     padding: 1.25rem 1.5rem; font-size: 0.88rem; color: var(--accent); display: none;
   }
 
+  /* PROCESS MINING */
+  .process-mining { padding: 5rem 0; border-bottom: 1px solid var(--border); }
+  .discovery-grid {
+    display: grid; grid-template-columns: repeat(3, 1fr); margin-top: 3.5rem;
+  }
+  .discovery-card {
+    padding: 2.5rem; border: 1px solid var(--border); border-right: none;
+    transition: background 0.2s ease;
+    cursor: default;
+  }
+  .discovery-card:last-child { border-right: 1px solid var(--border); }
+  .discovery-card:hover { background: var(--accent-hover); }
+  .discovery-card:hover .discovery-num { color: var(--accent); }
+  .discovery-num {
+    font-family: var(--mono); font-size: 0.65rem; letter-spacing: 0.1em;
+    color: var(--ink-muted); margin-bottom: 1.25rem; display: block;
+    transition: color 0.2s;
+  }
+  .discovery-card h4 {
+    font-family: var(--serif); font-size: 1.3rem; font-weight: 400;
+    line-height: 1.2; margin-bottom: 0.85rem; color: var(--ink);
+  }
+  .discovery-card p {
+    font-size: 0.85rem; color: var(--ink-soft); line-height: 1.75; font-weight: 300;
+  }
+  .discovery-note {
+    margin-top: 3rem; padding: 2rem 2.5rem; background: var(--paper-warm);
+    border-left: 2px solid var(--accent); display: flex; align-items: flex-start; gap: 1.5rem;
+  }
+  .discovery-note-label {
+    font-family: var(--mono); font-size: 0.62rem; letter-spacing: 0.12em;
+    text-transform: uppercase; color: var(--accent); white-space: nowrap; padding-top: 2px;
+  }
+  .discovery-note p {
+    font-size: 0.88rem; color: var(--ink-soft); line-height: 1.8; font-weight: 300;
+  }
+  @media (max-width: 768px) {
+    .discovery-grid { grid-template-columns: 1fr; }
+    .discovery-card { border-right: 1px solid var(--border); border-bottom: none; }
+    .discovery-card:last-child { border-bottom: 1px solid var(--border); }
+  }
+
   /* FOOTER */
   footer { border-top: 1px solid var(--border); padding: 3rem 0; margin-top: 2rem; }
   .footer-inner {
@@ -524,6 +577,36 @@
       <p class="eyebrow" data-animate>What we do</p>
       <h1 data-animate data-delay="1">Technology that does the heavy lifting</h1>
       <p data-animate data-delay="2">We build automated systems that give your team back the time they've been quietly losing — so they can focus on the work that actually moves things forward.</p>
+    </div>
+
+    <div class="process-mining">
+      <div class="workflow-intro" data-animate>
+        <h2>Process Mining</h2>
+        <p>Before we build anything, we come to you. We spend time inside your business — sitting with your teams, watching how work actually moves, and mapping the processes that drive your operations day to day. What we find almost always surprises people: the most costly inefficiencies aren't the obvious ones. They're the small frictions that compound quietly, meeting by meeting, handoff by handoff, until they're just the way things are done.</p>
+      </div>
+
+      <div class="discovery-grid">
+        <div class="discovery-card" data-animate>
+          <span class="discovery-num">01 — Discover</span>
+          <h4>On-site with your team</h4>
+          <p>We come to you. We sit in the room, join the meetings, and ask the questions no one has had time to ask. Our goal is to understand how work actually happens — not how it's supposed to happen on paper.</p>
+        </div>
+        <div class="discovery-card" data-animate data-delay="1">
+          <span class="discovery-num">02 — Map</span>
+          <h4>Chart every step & handoff</h4>
+          <p>We document your workflows end to end: who owns what, where decisions get made, where things stall, and where information falls through the cracks. A clear map of reality is the only honest starting point.</p>
+        </div>
+        <div class="discovery-card" data-animate data-delay="2">
+          <span class="discovery-num">03 — Automate</span>
+          <h4>Build what sets your team free</h4>
+          <p>With a full picture of your processes, we identify what can — and should — run automatically. Then we build it. The result isn't just efficiency; it's your people working on the things only they can do.</p>
+        </div>
+      </div>
+
+      <div class="discovery-note" data-animate>
+        <span class="discovery-note-label">Why it matters</span>
+        <p>Most automation fails because it's applied to broken processes. Process mining comes first — so everything we build is grounded in how your business actually works, not how it looks in a flowchart.</p>
+      </div>
     </div>
 
     <div class="workflow-section">
