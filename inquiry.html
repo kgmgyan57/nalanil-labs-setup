@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Start a Conversation | Nalanil Labs — Process Mining & AI Automation</title>
+  <meta name="description" content="Tell us about your operation. We take on a small number of engagements at a time and respond within two business days.">
+  <meta name="keywords" content="contact Nalanil Labs, process mining inquiry, AI automation consultation, business automation enquiry">
+  <meta name="robots" content="index, follow">
+  <link rel="canonical" href="https://nalanil.com/inquiry.html">
+  <meta property="og:type"        content="website">
+  <meta property="og:url"         content="https://nalanil.com/inquiry.html">
+  <meta property="og:title"       content="Start a Conversation | Nalanil Labs">
+  <meta property="og:description" content="Tell us about your operation. We respond within two business days.">
+  <meta name="twitter:card"        content="summary">
+  <meta name="twitter:title"       content="Start a Conversation | Nalanil Labs">
+  <meta name="twitter:description" content="Tell us about your operation. We respond within two business days.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=DM+Mono:wght@300;400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/styles.css">
+</head>
+<body>
+
+<nav>
+  <div class="nav-inner">
+    <a class="nav-logo" href="/">Nalanil <span>Labs</span></a>
+    <ul class="nav-links">
+      <li><a href="/"               data-nav="home">Home</a></li>
+      <li><a href="/solutions.html" data-nav="solutions">How it works</a></li>
+      <li><a href="/about.html"     data-nav="about">About</a></li>
+      <li><a href="/inquiry.html"   data-nav="inquiry">Inquiry</a></li>
+    </ul>
+    <button class="hamburger" id="hamburger" aria-label="Open menu">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+</nav>
+
+<div class="mobile-nav" id="mobile-nav">
+  <a href="/">Home</a>
+  <a href="/solutions.html">How it works</a>
+  <a href="/about.html">About</a>
+  <a href="/inquiry.html">Inquiry</a>
+</div>
+
+<main>
+
+  <div class="container">
+    <div class="inquiry-layout">
+
+      <!-- LEFT: INFO -->
+      <div class="inquiry-info" data-animate>
+        <h2>Let's start a conversation</h2>
+        <p>We take on a small number of engagements at a time, to ensure every partner gets the attention their work deserves.</p>
+        <p>We'll respond within two business days.</p>
+
+        <div class="contact-detail">
+          <span class="cd-label">Email</span>
+          <span class="cd-val">solutions@nalanil.com</span>
+        </div>
+        <div class="contact-detail">
+          <span class="cd-label">Website</span>
+          <span class="cd-val">nalanil.com</span>
+        </div>
+        <div class="contact-detail">
+          <span class="cd-label">Response time</span>
+          <span class="cd-val">Within 2 business days</span>
+        </div>
+      </div>
+
+      <!-- RIGHT: FORM -->
+      <div data-animate data-delay="1">
+
+        <!-- Pre-form context -->
+        <div class="inquiry-pretext">
+          <p>Most teams come to us when:</p>
+          <ul>
+            <li>Work is stuck in manual processes that no one has had time to fix</li>
+            <li>Teams are overloaded with coordination, not the work itself</li>
+            <li>Previous automation attempts haven't delivered lasting results</li>
+            <li>The business is growing but the operational overhead is growing faster</li>
+          </ul>
+        </div>
+
+        <div id="success-msg" class="success-msg">Thank you — your message has been received. We'll be in touch shortly.</div>
+
+        <form
+          class="form-grid"
+          id="inquiry-form"
+          action="https://formsubmit.co/solutions@nalanil.com"
+          method="POST"
+        >
+          <input type="hidden" name="_subject"  value="New inquiry from nalanil.com">
+          <input type="hidden" name="_template" value="table">
+          <input type="hidden" name="_next"     id="form-next" value="">
+          <input type="text"   name="_honey"    tabindex="-1" autocomplete="off" style="display:none">
+
+          <div class="form-row">
+            <div class="form-field">
+              <label for="first-name">First name</label>
+              <input id="first-name" name="first_name" type="text" placeholder="Your first name" required>
+            </div>
+            <div class="form-field">
+              <label for="last-name">Last name</label>
+              <input id="last-name" name="last_name" type="text" placeholder="Your last name" required>
+            </div>
+          </div>
+
+          <div class="form-field">
+            <label for="email">Email</label>
+            <input id="email" name="email" type="email" placeholder="your@email.com" required>
+          </div>
+
+          <div class="form-field">
+            <label for="organisation">Organisation</label>
+            <input id="organisation" name="organisation" type="text" placeholder="Company or project name" required>
+          </div>
+
+          <div class="form-field">
+            <label for="area-of-interest">Area of interest</label>
+            <select id="area-of-interest" name="area_of_interest" required>
+              <option value="" disabled selected>Select one</option>
+              <option>Process Mining &amp; Discovery</option>
+              <option>Workflow Redesign</option>
+              <option>AI Automation Implementation</option>
+              <option>Full engagement (all three phases)</option>
+              <option>Something else</option>
+            </select>
+          </div>
+
+          <div class="form-field">
+            <label for="project-details">Tell us about your situation</label>
+            <textarea id="project-details" name="project_details" placeholder="What's the process or workflow causing the most friction? What have you already tried? What does success look like?" required></textarea>
+          </div>
+
+          <div class="form-submit">
+            <button class="btn-submit" type="submit">Send inquiry</button>
+          </div>
+
+          <p class="form-note">We respect your privacy. Your information is never shared or sold.</p>
+        </form>
+      </div>
+
+    </div>
+  </div>
+
+</main>
+
+<footer>
+  <div class="footer-inner">
+    <div class="footer-left">
+      <span class="footer-logo">Nalanil Labs</span>
+      <span class="footer-tagline">Process-first. Then automation.</span>
+    </div>
+    <div class="footer-right">
+      <a href="mailto:solutions@nalanil.com" class="footer-email">solutions@nalanil.com</a>
+      <span class="footer-copy">© 2026 Nalanil Labs. nalanil.com</span>
+    </div>
+  </div>
+</footer>
+
+<script src="/script.js"></script>
+</body>
+</html>
